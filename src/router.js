@@ -2,6 +2,10 @@ const validate = require('koa2-validation')
 const controller = require('./controller')
 
 module.exports = router => {
+  router.all('/', (ctx, next) => { ctx.body = 'Greeting guys!' })
+
+  router.use(controller.hexoInitErrorHandler)
+
   router.post('/post',
     validate(controller.v.addPost),
     controller.addPost

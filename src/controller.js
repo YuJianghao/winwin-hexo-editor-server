@@ -13,17 +13,23 @@ exports.v = {
   }
 }
 
+exports.hexoInitErrorHandler = async function (ctx, next) {
+  try {
+    await next()
+  } catch (err) {
+    if (err.name === 'Hexo init') {
+      err.status = 503
+    }
+    throw err
+  }
+}
+
 exports.postNotFoundErrorHandler = async function (ctx, next) {
   try {
     await next()
   } catch (err) {
     if (err.name === 'Not Found') {
-      ctx.status = 404
-      ctx.body = {
-        success: false,
-        message: err.message
-      }
-      return
+      err.status = 404
     }
     throw err
   }

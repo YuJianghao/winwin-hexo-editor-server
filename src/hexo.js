@@ -252,7 +252,6 @@ class Hexo {
     delete post._id
     // post.published是计算出来的，不是指定的
     delete post.published
-    logger.log(post)
     post = await this._add(post)
     console.log('added post', post._id)
     return post
