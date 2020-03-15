@@ -1,6 +1,6 @@
 {
   "name": "@winwin/hexo-editor-server",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A koa2 middleware provides hexo eidting API.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,10 @@
   },
   "keywords": [
     "koa2",
-    "hexo"
+    "hexo",
+    "blog",
+    "markdown",
+    "editor"
   ],
   "author": "winwin2011",
   "license": "MIT",
