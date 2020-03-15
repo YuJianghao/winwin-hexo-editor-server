@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "doc": "rm -rf ./doc;jsdoc . -d ./doc -c jsdoc.config.js -r -t ./node_modules/ink-docstrap/template",
+    "doc": "rm -rf ./docs;jsdoc . -d ./docs -c jsdoc.config.js -r -t ./node_modules/ink-docstrap/template",
     "publish": "npm publish --registry=http://registry.npmjs.org --access public"
   },
   "keywords": [
