@@ -1,1 +1,8 @@
-docs
+.vscode*
+node_modules*
+docs*
+.eslintrc.js
+.gitignore
+jest.config.js
+jsdoc.config.js
+package-lock.json
