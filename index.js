@@ -1,5 +1,5 @@
-module.exports={
-  hello:()=>{
+module.exports = {
+  hello: () => {
     console.log('hello')
   }
 }
