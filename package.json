@@ -1,0 +1,15 @@
+{
+  "name": "@winwin/hexo-editor-server",
+  "version": "0.0.1",
+  "description": "A koa2 middleware provide hexo eidting API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "koa2",
+    "hexo"
+  ],
+  "author": "winwin2011",
+  "license": "MIT"
+}
