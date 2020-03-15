@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "doc":"rm -rf ./doc;jsdoc ./src -d ./doc -r -t ./node_modules/ink-docstrap/template",
+    "doc": "rm -rf ./doc;jsdoc . -d ./doc -c jsdoc.config.js -r -t ./node_modules/ink-docstrap/template",
     "publish": "npm publish --registry=http://registry.npmjs.org --access public"
   },
   "keywords": [
@@ -19,9 +19,9 @@
     "url": "git+git@github.com:YuJianghao/winwin-hexo-editor-server.git"
   },
   "homepage": "https://github.com/YuJianghao/winwin-hexo-editor-server",
-  "bugs":{
+  "bugs": {
     "email": "yjh2011@live.com",
-    "url":"https://github.com/YuJianghao/winwin-hexo-editor-server/issues"
+    "url": "https://github.com/YuJianghao/winwin-hexo-editor-server/issues"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -36,5 +36,12 @@
     "ink-docstrap": "^1.3.2",
     "jest": "^25.1.0",
     "jsdoc": "^3.6.3"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "hexo": "^4.2.0",
+    "koa-router": "^8.0.8",
+    "koa2-validation": "^1.1.0",
+    "simple-git": "^1.132.0"
   }
 }
