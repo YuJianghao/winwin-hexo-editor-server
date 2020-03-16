@@ -2,6 +2,7 @@ const HexoAPI = require('hexo')
 const path = require('path')
 const fs = require('hexo-fs')
 const Git = require('simple-git/promise')
+const isGit = require('is-git-repository')
 const { exec } = require('child_process')
 const Post = require('./post')
 const debug = require('debug')('hexo')
@@ -16,10 +17,32 @@ class Hexo {
    */
   constructor (cwd = process.cwd()) {
     this.cwd = cwd
-    this.hexo = new HexoAPI(cwd, { debug: false, draft: true })
-    this.git = new Git(this.cwd)
     this.ready = false
+    this.isGit = isGit(this.cwd)
+    if (!this.isGit) {
+      console.warn(`${this.cwd} isn't a git repository`)
+      console.warn('Function syncGit, resetGit and saveGit will cause errors')
+    }
+    this.git = null
     if (process.env.NODE_ENV !== 'test') { this._init() }
+  }
+
+  /**
+   * 检测是否是hexo博客目录
+   * 如果没有依赖hexo或者没有`_config.yml`则视为不是博客目录
+   * @private
+   */
+  async _checkIsBlog () {
+    try {
+      const file = fs.readFileSync(path.join(this.cwd, 'package.json'))
+      const packageJSON = JSON.parse(file)
+      const err = new Error(`${this.cwd} isn't a hexo blog folder!`)
+      if (!packageJSON.dependencies.hexo) throw err
+      fs.readFileSync(path.join(this.cwd, '_config.yml'))
+    } catch (err) {
+      if (err.code === 'ENOENT') throw new Error(`${this.cwd} isn't a hexo blog folder!`)
+      throw err
+    }
   }
 
   /**
@@ -27,7 +50,11 @@ class Hexo {
    * @private
    */
   async _init () {
+    await this._checkIsBlog()
     debug('starting ...')
+
+    this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true })
+    if (this.isGit) { this.git = new Git(this.cwd) }
 
     // 初始化hexo
     await this.hexo.init()
@@ -428,10 +455,21 @@ class Hexo {
   }
 
   /**
+   * 抛出不是git目录的异常
+   * @private
+   */
+  _notGitRepo () {
+    const err = new Error(`${this.cwd} isn't a git repository`)
+    err.name = 'Not git repo'
+    throw err
+  }
+
+  /**
    * 从GIT同步
    */
   async syncGit () {
     debug('sync git')
+    if (!this.isGit) this._notGitRepo()
     await this.git.pull()
     return Promise.resolve()
   }
@@ -441,6 +479,7 @@ class Hexo {
    */
   async resetGit () {
     debug('reset git')
+    if (!this.isGit) this._notGitRepo()
     await this.git.reset('hard')
     return Promise.resolve()
   }
@@ -450,6 +489,7 @@ class Hexo {
    */
   async saveGit () {
     debug('save git')
+    if (!this.isGit) this._notGitRepo()
     await this.git.add('./*')
     await this.git.commit('server update posts: ' + (new Date()).toString(), () => {})
     await this.git.push()
