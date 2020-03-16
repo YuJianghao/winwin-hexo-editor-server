@@ -23,7 +23,7 @@ Or other package manager, such as `yarn`.
 ### Core
 
 - Set `process.env.HEXO_ROOT` to your hexo blog folder, i.e. the same folder as your hexo `_config.yml` file.
-- Inside your koa app file, mount hexo-editor-server to you app.
+- Inside your koa app file, mount hexo-editor-server to app.
 
 ```js
 // app.js

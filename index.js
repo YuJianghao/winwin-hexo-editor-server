@@ -11,7 +11,7 @@ const router = require('koa-router')()
  * @param {Koa} app - koa app instance
  * @param {Object} opts - options
  * @param {String} [opts.base='/hexo/'] - hexo-editor-server base url. e.g. `/` or `/editor/`, default is `/hexo/`
- * @param {Function} opts.auth - custom authentication middleware
+ * @param {Function} [opts.auth] - custom authentication middleware
  * @returns {void}
  */
 module.exports = function (app, opts = {}) {
