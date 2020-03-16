@@ -1,6 +1,7 @@
 .vscode*
 node_modules*
 docs*
+test*
 .eslintrc.js
 .gitignore
 jest.config.js

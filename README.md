@@ -2,15 +2,28 @@
 
 A koa2 middleware provides hexo editing API.
 
+<img src="https://img.shields.io/npm/v/@winwin/hexo-editor-server?style=flat-square">
+
 If you have your own server, and using HEXO for blogging, and looking for an editor that can use anywhere anytime, and ... Bingo! You found it !
 
 I write this project because almost every markdown editor I tried is not convenient enought when writting blog with HEXO. I always have to add tags categories and front-matters mannuly, and run script to generate and deloy(even though it is convenient enough for most people). So I write this one to edit HEXO post in a convenient way by just click click and click.
 
-I also have a SPA hexo-editor-client based on Vue and Quasar.( I promise I'm working on it !❤).
+I also have a SPA hexo-editor-client based on Vue and Quasar.( I promise I'm working on it !❤). see [@winin/hexo-editor-client](https://github.com/YuJianghao/winwin-hexo-editor-client), [@winin/hexo-editor-sdk](https://github.com/YuJianghao/winwin-hexo-editor-sdk) and [Hand by hand installation guide](http://blog.yujianghao.cn/2020/03/16/rv13LtBZuoRgOPWy/)
 
 API doc is comming soon... You can find it in `./src/controller.js`.
 
+## Feature
+
+- [x] Post add/delete/update/puiblish/unpublish
+- [x] Support for categories
+- [x] Support for tags
+- [x] Support for front-matters
+- [x] Custom authentication
+- [ ] let me know what you need ...
+
 ## Installation
+
+[Hand to hand tutorial here](http://blog.yujianghao.cn/2020/03/16/rv13LtBZuoRgOPWy/)
 
 ```bash
 npm install --save @winwin/hexo-editor-server

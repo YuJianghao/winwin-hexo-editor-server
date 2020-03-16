@@ -10,7 +10,7 @@ const router = require('koa-router')()
  * mount hexo-editor-server to koa app
  * @param {Koa} app - koa app instance
  * @param {Object} opts - options
- * @param {String} [opts.base='/hexo/'] - hexo-editor-server base url. e.g. `/` or `/editor/`, default is `/hexo/`
+ * @param {String} [opts.base='/hexo/'] - hexo-editor-server base url. e.g. `/` or `/editor/`, default is `/hexo/`. Must match `^/?([a-zA-Z0-9]+/?)?$`
  * @param {Function} [opts.auth] - custom authentication middleware
  * @returns {void}
  */
@@ -25,6 +25,8 @@ module.exports = function (app, opts = {}) {
   }
 
   if (opts.base) {
+    const reg = /^\/?([a-zA-Z0-9]+\/?)?$/i
+    if (opts.base.search(reg) < 0) throw new Error('Invalid opts.base! Must match ^/?([a-zA-Z0-9]+/?)?$')
     // format server base and router prefix
     opts.base = (opts.base.slice(0, 1) === '/' ? '' : '/') + opts.base
     opts.base += opts.base.slice(-1) === '/' ? '' : '/'
