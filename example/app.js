@@ -1,5 +1,4 @@
-process.env.HEXO_ROOT = '../../winwinblog'
-// process.env.HEXO_ROOT = 'path/to/your/hexo/blog/folder/'
+process.env.HEXO_ROOT = 'path/to/your/hexo/blog/folder/'
 
 const Koa = require('koa')
 const json = require('koa-json')
