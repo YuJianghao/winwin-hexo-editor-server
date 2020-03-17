@@ -7,7 +7,7 @@ const isGit = require('is-git-repository')
 const { exec } = require('child_process')
 const Post = require('./post')
 const debug = require('debug')('hexo')
-const warn = require('./utils').warn
+const { warn, error } = require('./utils')
 
 /**
  * 用于和hexo交互的模型
@@ -21,11 +21,6 @@ class Hexo {
   constructor (cwd = process.cwd()) {
     this.cwd = cwd
     this.ready = false
-    this.isGit = isGit(this.cwd)
-    if (!this.isGit) {
-      warn(`${this.cwd} isn't a git repository`)
-      warn('Function syncGit, resetGit and saveGit will cause errors')
-    }
     this.git = null
     if (process.env.NODE_ENV !== 'test') { this._init() }
   }
@@ -43,7 +38,14 @@ class Hexo {
       if (!packageJSON.dependencies.hexo) throw err
       fs.readFileSync(path.join(this.cwd, '_config.yml'))
     } catch (err) {
-      if (err.code === 'ENOENT') throw new Error(`${this.cwd} isn't a hexo blog folder!`)
+      if (err.code === 'ENOENT') {
+        err.message = `${this.cwd} isn't a hexo blog folder!`
+      }
+      error(err.message)
+      if (process.env.NODE_ENV !== 'test') {
+        error('exiting...')
+        process.exit(1)
+      }
       throw err
     }
   }
@@ -66,8 +68,13 @@ class Hexo {
    */
   async _init () {
     await this._checkIsBlog()
-    await this._checkCanDeploy()
     debug('starting ...')
+    await this._checkCanDeploy()
+    this.isGit = isGit(this.cwd)
+    if (!this.isGit) {
+      warn(`${this.cwd} isn't a git repository`)
+      warn('Function syncGit, resetGit and saveGit will cause errors')
+    }
 
     this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true })
     if (this.isGit) { this.git = new Git(this.cwd) }
