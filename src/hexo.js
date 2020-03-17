@@ -127,6 +127,7 @@ class Hexo {
    * 从磁盘和数据库删除文章
    * @param {String[]} ids - 需要删除的文章id列表
    * @returns {Post[]} - 已删除的文章列表
+   * @private
    */
   async _remove (ids) {
     var posts = []
@@ -391,6 +392,7 @@ class Hexo {
    * @param {String} from
    * @param {String} folder source/_xxx
    * @param {String} data post.raw
+   * @private
    */
   async _moveFile (dest, post) {
     debug(`move file from ${post.source} to ${dest}/`)
@@ -426,6 +428,7 @@ class Hexo {
   /**
    * 运行控制台程序
    * @param {String} cmd 命令
+   * @private
    */
   async _runShell (cmd) {
     return new Promise((resolve, reject) => {
