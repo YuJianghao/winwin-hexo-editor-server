@@ -19,6 +19,7 @@ API doc is comming soon... You can find it in `./src/controller.js`.
 - [x] Support for tags
 - [x] Support for front-matters
 - [x] Support for git push/reset/pull
+- [x] Support for hexo generate/deploy/clean
 - [x] Custom authentication
 - [ ] let me know what you need ...
 
