@@ -1,6 +1,7 @@
 const Hexo = require('./hexo')
 const hexo = new Hexo(process.env.HEXO_ROOT)
 const Joi = require('@hapi/joi')
+const warn = require('./utils').warn
 
 exports.hexo = hexo
 
@@ -13,13 +14,23 @@ exports.v = {
   }
 }
 
-exports.hexoInitErrorHandler = async function (ctx, next) {
+exports.defaultErrorHandler = async function (ctx, next) {
   try {
     await next()
   } catch (err) {
     if (err.name === 'Hexo Init') {
       err.status = 503
     }
+    if (err.name === 'Hexo Cant Deploy') {
+      err.status = 503
+    }
+    if (err.name === 'Git Cant Save') {
+      err.status = 503
+    }
+    if (err.name === 'Git Cant Sync') {
+      err.status = 503
+    }
+    if (err.status === 503) warn(err.name, ':', err.message)
     throw err
   }
 }

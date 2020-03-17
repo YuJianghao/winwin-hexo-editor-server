@@ -1,11 +1,14 @@
 const HexoAPI = require('hexo')
 const path = require('path')
+const YAML = require('yamljs')
 const fs = require('hexo-fs')
 const Git = require('simple-git/promise')
 const isGit = require('is-git-repository')
 const { exec } = require('child_process')
 const Post = require('./post')
 const debug = require('debug')('hexo')
+const warn = require('./utils').warn
+
 /**
  * 用于和hexo交互的模型
  * @class
@@ -20,8 +23,8 @@ class Hexo {
     this.ready = false
     this.isGit = isGit(this.cwd)
     if (!this.isGit) {
-      console.warn(`${this.cwd} isn't a git repository`)
-      console.warn('Function syncGit, resetGit and saveGit will cause errors')
+      warn(`${this.cwd} isn't a git repository`)
+      warn('Function syncGit, resetGit and saveGit will cause errors')
     }
     this.git = null
     if (process.env.NODE_ENV !== 'test') { this._init() }
@@ -46,11 +49,24 @@ class Hexo {
   }
 
   /**
+   * 检查是否存在hexo部署配置，如果_config.yml>deploy>type存在则视为有配置
+   * @private
+   */
+  async _checkCanDeploy () {
+    const hexoConfigYML = YAML.parse(fs.readFileSync(path.join(this.cwd, '_config.yml')).toString())
+    this.canDeploy = hexoConfigYML.deploy && hexoConfigYML.deploy.type
+    if (!this.canDeploy) {
+      warn(`Hexo deploy config not exists in ${this.cwd}. Can\'t deploy blog.`)
+    }
+  }
+
+  /**
    * 初始化并开始监听文件
    * @private
    */
   async _init () {
     await this._checkIsBlog()
+    await this._checkCanDeploy()
     debug('starting ...')
 
     this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true })
@@ -413,6 +429,12 @@ class Hexo {
    */
   async deploy () {
     this._checkReady()
+    if (!this.canDeploy) {
+      const err = new Error()
+      err.name = 'Hexo Cant Deploy'
+      err.message = 'No deploy config found. Can\'t deploy.'
+      throw err
+    }
     debug('deploy')
     return this._runShell('hexo clean;hexo generate -d')
   }
@@ -474,8 +496,17 @@ class Hexo {
   async syncGit () {
     debug('sync git')
     if (!this.isGit) this._notGitRepo()
-    await this.git.pull()
-    return Promise.resolve()
+    try {
+      await this.git.reset('hard')
+      await this.git.pull()
+    } catch (err) {
+      if (err.message.indexOf('no tracking information') >= 0) {
+        err.status = 503
+        err.message = 'No configured remote origin. Reset only.'
+        err.name = 'Git Cant Sync'
+      }
+      throw err
+    }
   }
 
   /**
@@ -494,10 +525,18 @@ class Hexo {
   async saveGit () {
     debug('save git')
     if (!this.isGit) this._notGitRepo()
-    await this.git.add('./*')
-    await this.git.commit('server update posts: ' + (new Date()).toString(), () => {})
-    await this.git.push()
-    return Promise.resolve()
+    try {
+      await this.git.add('./*')
+      await this.git.commit('server update posts: ' + (new Date()).toString(), () => {})
+      await this.git.push()
+    } catch (err) {
+      if (err.message.indexOf('No configured push destination') >= 0) {
+        err.status = 503
+        err.message = 'No configured push destination'
+        err.name = 'Git Cant Save'
+      }
+      throw err
+    }
   }
 }
 
