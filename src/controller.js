@@ -17,7 +17,7 @@ exports.hexoInitErrorHandler = async function (ctx, next) {
   try {
     await next()
   } catch (err) {
-    if (err.name === 'Hexo init') {
+    if (err.name === 'Hexo Init') {
       err.status = 503
     }
     throw err

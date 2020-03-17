@@ -78,6 +78,7 @@ class Hexo {
    */
   _checkReady () {
     if (!this.ready) {
+      debug('initiating, try again later')
       const err = new Error('Hexo initiating, try again later')
       err.name = 'Hexo Init'
       throw err
@@ -211,7 +212,7 @@ class Hexo {
    */
   async listPosts () {
     this._checkReady()
-    console.log('list posts')
+    debug('list posts', this.hexo.locals.get('posts').toArray().length)
     return this.hexo.locals.get('posts')
       .map(doc => new Post(doc))
   }
