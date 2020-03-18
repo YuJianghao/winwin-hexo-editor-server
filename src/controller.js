@@ -18,6 +18,18 @@ exports.defaultErrorHandler = async function (ctx, next) {
   try {
     await next()
   } catch (err) {
+    if (err.status !== 404 && err.status !== 500) throw err
+    ctx.status = err.status
+    ctx.body = {
+      success: false,
+      message: err.name
+    }
+  }
+}
+exports.serviceErrorHandler = async function (ctx, next) {
+  try {
+    await next()
+  } catch (err) {
     if (err.name === 'Hexo Init') {
       err.status = 503
     }
