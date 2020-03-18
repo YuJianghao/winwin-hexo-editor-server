@@ -18,7 +18,7 @@ exports.defaultErrorHandler = async function (ctx, next) {
   try {
     await next()
   } catch (err) {
-    if (err.status !== 404 && err.status !== 500) throw err
+    if (err.status !== 404 && err.status !== 503) throw err
     ctx.status = err.status
     ctx.body = {
       success: false,
