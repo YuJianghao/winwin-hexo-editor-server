@@ -22,7 +22,7 @@ exports.defaultErrorHandler = async function (ctx, next) {
     ctx.status = err.status
     ctx.body = {
       success: false,
-      message: err.name
+      message: err.message
     }
   }
 }
