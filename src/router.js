@@ -5,6 +5,7 @@ module.exports = router => {
   router.all('/', (ctx, next) => { ctx.body = 'Greeting guys!' })
 
   router.use(controller.defaultErrorHandler)
+  router.use(controller.serviceErrorHandler)
 
   router.post('/post',
     validate(controller.v.addPost),

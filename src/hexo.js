@@ -7,7 +7,7 @@ const isGit = require('is-git-repository')
 const { exec } = require('child_process')
 const Post = require('./post')
 const debug = require('debug')('hexo')
-const warn = require('./utils').warn
+const { warn, error } = require('./utils')
 
 /**
  * 用于和hexo交互的模型
@@ -21,11 +21,6 @@ class Hexo {
   constructor (cwd = process.cwd()) {
     this.cwd = cwd
     this.ready = false
-    this.isGit = isGit(this.cwd)
-    if (!this.isGit) {
-      warn(`${this.cwd} isn't a git repository`)
-      warn('Function syncGit, resetGit and saveGit will cause errors')
-    }
     this.git = null
     if (process.env.NODE_ENV !== 'test') { this._init() }
   }
@@ -43,7 +38,14 @@ class Hexo {
       if (!packageJSON.dependencies.hexo) throw err
       fs.readFileSync(path.join(this.cwd, '_config.yml'))
     } catch (err) {
-      if (err.code === 'ENOENT') throw new Error(`${this.cwd} isn't a hexo blog folder!`)
+      if (err.code === 'ENOENT') {
+        err.message = `${this.cwd} isn't a hexo blog folder!`
+      }
+      error(err.message)
+      if (process.env.NODE_ENV !== 'test') {
+        error('exiting...')
+        process.exit(1)
+      }
       throw err
     }
   }
@@ -66,8 +68,13 @@ class Hexo {
    */
   async _init () {
     await this._checkIsBlog()
-    await this._checkCanDeploy()
     debug('starting ...')
+    await this._checkCanDeploy()
+    this.isGit = isGit(this.cwd)
+    if (!this.isGit) {
+      warn(`${this.cwd} isn't a git repository`)
+      warn('Function syncGit, resetGit and saveGit will cause errors')
+    }
 
     this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true })
     if (this.isGit) { this.git = new Git(this.cwd) }
@@ -141,6 +148,16 @@ class Hexo {
   }
 
   /**
+   * 抛出文章未找到异常
+   * @private
+   */
+  _throwPostNotFound () {
+    const err = new Error('post not found !')
+    err.name = 'Not Found'
+    throw err
+  }
+
+  /**
    * 从磁盘和数据库删除文章
    * @param {String[]} ids - 需要删除的文章id列表
    * @returns {Post[]} - 已删除的文章列表
@@ -204,7 +221,7 @@ class Hexo {
     src = new Post(src)
     src.update(post)
     var posts = await this._save([src])
-    if (posts.length === 0) throw new Error('post not found !')
+    if (posts.length === 0) this._throwPostNotFound()
     if (posts.length > 1) throw new Error('multiple posts found')
     return posts[0]
   }
@@ -229,6 +246,7 @@ class Hexo {
   async listPosts () {
     this._checkReady()
     debug('list posts', this.hexo.locals.get('posts').toArray().length)
+    await this.hexo.load()
     return this.hexo.locals.get('posts')
       .map(doc => new Post(doc))
   }
@@ -327,14 +345,18 @@ class Hexo {
     console.log('delete post', _id)
     if (hard) {
       var posts = await this._remove([_id])
-      if (posts.length === 0) throw new Error('post not found !')
-      if (posts.length > 1) throw new Error('multiple posts found')
+      if (posts.length === 0) this._throwPostNotFound()
+      if (posts.length > 1) {
+        throw new Error('multiple posts found')
+      }
       return posts[0]
+    } else {
+      const post = await this._get(_id)
+      if (!post) this._throwPostNotFound()
+      await this._moveFile('_discarded', post)
+      await this.hexo.load()
+      return new Post(post)
     }
-    const post = await this._get(_id)
-    await this._moveFile('_discarded', post)
-    await this.hexo.load()
-    return new Post(post)
   }
 
   /**
@@ -357,7 +379,7 @@ class Hexo {
     await this.hexo.load()
     const post = this.hexo.locals.get('posts')
       .findOne({ slug: doc.slug })
-    if (!post) throw new Error('post not found !')
+    if (!post) this._throwPostNotFound()
     return new Post(post)
   }
 
