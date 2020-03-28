@@ -24,6 +24,14 @@ module.exports = function (app, opts = {}) {
     throw new Error('koa app required')
   }
 
+  if (!opts.hexoRoot) {
+    // check if hexoRoot set
+    console.error('hexoRoot is required!')
+    throw new Error('hexoRoot is required!')
+  }
+  const hexo = require('./src/controller').hexo
+  hexo.init(opts.hexoRoot)
+
   if (opts.base) {
     const reg = /^\/?([a-zA-Z0-9]+\/?)?$/i
     if (opts.base.search(reg) < 0) throw new Error('Invalid opts.base! Must match ^/?([a-zA-Z0-9]+/?)?$')

@@ -18,11 +18,9 @@ class Hexo {
    * 初始化
    * @param {String} [cwd=process.cwd()] - 工作路径
    */
-  constructor (cwd = process.cwd()) {
-    this.cwd = cwd
+  constructor () {
     this.ready = false
     this.git = null
-    if (process.env.NODE_ENV !== 'test') { this._init() }
   }
 
   /**
@@ -30,7 +28,7 @@ class Hexo {
    * 如果没有依赖hexo或者没有`_config.yml`则视为不是博客目录
    * @private
    */
-  async _checkIsBlog () {
+  _checkIsBlog () {
     try {
       const file = fs.readFileSync(path.join(this.cwd, 'package.json'))
       const packageJSON = JSON.parse(file)
@@ -64,10 +62,12 @@ class Hexo {
 
   /**
    * 初始化并开始监听文件
-   * @private
+   * @param {String} cwd Hexo博客目录
    */
-  async _init () {
-    await this._checkIsBlog()
+  async init (cwd) {
+    if (!cwd) throw new Error('Hexo Root is required!')
+    this.cwd = cwd
+    this._checkIsBlog()
     debug('starting ...')
     await this._checkCanDeploy()
     this.isGit = isGit(this.cwd)
@@ -76,7 +76,7 @@ class Hexo {
       warn('Function syncGit, resetGit and saveGit will cause errors')
     }
 
-    this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true })
+    this.hexo = new HexoAPI(this.cwd, { debug: false, draft: true, silent: process.env.NODE_ENV === 'production' })
     if (this.isGit) { this.git = new Git(this.cwd) }
 
     // 初始化hexo

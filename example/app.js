@@ -1,5 +1,3 @@
-process.env.HEXO_ROOT = 'path/to/your/hexo/blog/folder/'
-
 const Koa = require('koa')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
@@ -21,7 +19,7 @@ app.use(bodyparser({
 app.use(json())
 
 // mount hexo-editor-server to koa app
-hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */ })
+hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */, hexoRoot: 'your/blog/path' })
 
 const http = require('http')
 const server = http.createServer(app.callback())

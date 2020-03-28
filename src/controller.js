@@ -1,5 +1,5 @@
 const Hexo = require('./hexo')
-const hexo = new Hexo(process.env.HEXO_ROOT)
+const hexo = new Hexo()
 const Joi = require('@hapi/joi')
 const warn = require('./utils').warn
 
