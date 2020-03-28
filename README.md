@@ -37,13 +37,13 @@ Or other package manager, such as `yarn`.
 
 ### Core
 
-- Set `process.env.HEXO_ROOT` to your hexo blog folder, i.e. the same folder as your hexo `_config.yml` file.
 - Inside your koa app file, mount hexo-editor-server to app.
+- Set `opts.hexoRoot` to your hexo blog folder, i.e. the same folder as your hexo `_config.yml` file.
 
 ```js
 // app.js
 // mount hexo-editor-server to koa app
-hexoeditorserver(app, { base: '/hexo' , auth: /* some authentication middleware */ })
+hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */, hexoRoot: 'your/blog/path' })
 
 ```
 
@@ -56,6 +56,7 @@ hexoeditorserver(app, { base: '/hexo' , auth: /* some authentication middleware 
 
 ## Options
 
+- `hexoRoot`: your hexo blog folder, i.e. the same folder as your hexo `_config.yml` file. Required.
 - `base`: the root url your hexo-editor-server will be runing at. Defulat to `/hexo/`.
 - `auth`: a custom authentication koa middleware. Default to `undefined`.
 
