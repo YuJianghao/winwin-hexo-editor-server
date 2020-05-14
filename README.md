@@ -43,7 +43,11 @@ Or other package manager, such as `yarn`.
 ```js
 // app.js
 // mount hexo-editor-server to koa app
-hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */, hexoRoot: 'your/blog/path' })
+hexoeditorserver(app, {
+    base: '/hexo',
+    /* auth: */ /* some authentication middleware */ 
+    hexoRoot: 'your/blog/path' 
+})
 
 ```
 
@@ -77,3 +81,9 @@ All kinds of PR are welcomed, including crazy change!
 I learnt a lot about hexo usage from them!
 
 [Qusar Login Form Card Component](https://gist.github.com/justinatack/39ec7f37064b2e9fa61fbd450cba3826) by [justinatack](https://gist.github.com/justinatack/)
+
+## Release Note
+
+### v0.1.8
+
+- fix a auth bug
