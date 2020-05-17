@@ -548,7 +548,7 @@ class Hexo {
     debug('save git')
     if (!this.isGit) this._notGitRepo()
     try {
-      await this.git.add('./*')
+      await this._runShell('git add . --all')
       await this.git.commit('server update posts: ' + (new Date()).toString(), () => {})
       await this.git.push()
     } catch (err) {
