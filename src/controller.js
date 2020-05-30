@@ -1,5 +1,7 @@
 const Hexo = require('./hexo')
 const hexo = new Hexo()
+const Search = require('./search')
+const search = new Search(hexo)
 const Joi = require('@hapi/joi')
 const warn = require('./utils').warn
 
@@ -200,5 +202,22 @@ exports.clean = async function (ctx, next) {
   await hexo.clean()
   ctx.body = {
     success: true
+  }
+}
+
+exports.search = async function (ctx, next) {
+  const size = parseInt(ctx.query.size)
+  let data
+  if (size instanceof Number) {
+    data = await search.search(ctx.query.q, size)
+  } else {
+    data = await search.search(ctx.query.q)
+  }
+  ctx.body = {
+    success: true,
+    data: {
+      result: data,
+      q: ctx.query.q
+    }
   }
 }
