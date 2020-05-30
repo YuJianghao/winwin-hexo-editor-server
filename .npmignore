@@ -6,4 +6,4 @@ test*
 .gitignore
 jest.config.js
 jsdoc.config.js
-package-lock.json
+example*
