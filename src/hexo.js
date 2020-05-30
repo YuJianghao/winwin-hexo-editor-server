@@ -56,7 +56,7 @@ class Hexo {
     const hexoConfigYML = YAML.parse(fs.readFileSync(path.join(this.cwd, '_config.yml')).toString())
     this.canDeploy = hexoConfigYML.deploy && hexoConfigYML.deploy.type
     if (!this.canDeploy) {
-      warn(`Hexo deploy config not exists in ${this.cwd}. Can\'t deploy blog.`)
+      warn(`Hexo deploy config not exists in ${this.cwd}. Can't deploy blog.`)
     }
   }
 

@@ -10,7 +10,7 @@ test('koa app required', () => {
 describe('valid base', () => {
   const app = { }
   test('', () => {
-    var opts = { base: '' }
+    var opts = { base: '', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -18,7 +18,7 @@ describe('valid base', () => {
     expect(opts.prefix).toBe('/hexo')
   })
   test('/', () => {
-    var opts = { base: '/' }
+    var opts = { base: '/', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -26,7 +26,7 @@ describe('valid base', () => {
     expect(opts.prefix).toBe('')
   })
   test('/hexo', () => {
-    var opts = { base: '/hexo' }
+    var opts = { base: '/hexo', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -34,7 +34,7 @@ describe('valid base', () => {
     expect(opts.prefix).toBe('/hexo')
   })
   test('hexo', () => {
-    var opts = { base: 'hexo' }
+    var opts = { base: 'hexo', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -42,7 +42,7 @@ describe('valid base', () => {
     expect(opts.prefix).toBe('/hexo')
   })
   test('hexo/', () => {
-    var opts = { base: 'hexo/' }
+    var opts = { base: 'hexo/', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -50,7 +50,7 @@ describe('valid base', () => {
     expect(opts.prefix).toBe('/hexo')
   })
   test('/hexo/', () => {
-    var opts = { base: '/hexo/' }
+    var opts = { base: '/hexo/', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError(new TypeError('app.use is not a function'))
@@ -62,25 +62,25 @@ describe('valid base', () => {
 describe('invalid base', () => {
   const app = {}
   test('//', () => {
-    var opts = { base: '//' }
+    var opts = { base: '//', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError('Invalid opts.base!')
   })
   test('//hexo', () => {
-    var opts = { base: '//hexo' }
+    var opts = { base: '//hexo', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError('Invalid opts.base!')
   })
   test('hexo//', () => {
-    var opts = { base: 'hexo//' }
+    var opts = { base: 'hexo//', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError('Invalid opts.base!')
   })
   test('/hexo/hexo/', () => {
-    var opts = { base: '/hexo/hexo/' }
+    var opts = { base: '/hexo/hexo/', hexoRoot: '.' }
     expect(function () {
       hexoEditorServer(app, opts)
     }).toThrowError('Invalid opts.base!')
