@@ -248,7 +248,13 @@ class Hexo {
     debug('list posts', this.hexo.locals.get('posts').toArray().length)
     await this.hexo.load()
     return this.hexo.locals.get('posts')
-      .map(doc => new Post(doc))
+      .map(doc => new Post(doc)).map(post => {
+        post.brief = post._content.slice(0, 200)
+        // TODO: 未来删去这两个属性
+        // delete post._content
+        // delete post.raw
+        return post
+      })
   }
 
   /**
