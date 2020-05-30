@@ -4,7 +4,9 @@
   "description": "A koa2 middleware provides hexo eidting API.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest",
+    "test:watch": "npx jest --watchAll",
+    "test:ui": "npx majestic",
     "doc": "rm -rf ./docs;jsdoc . -d ./docs -c jsdoc.config.js -r -t ./node_modules/ink-docstrap/template",
     "publish": "npm publish --registry=http://registry.npmjs.org --access public"
   },
@@ -37,7 +39,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "ink-docstrap": "^1.3.2",
-    "jest": "^25.1.0",
     "jsdoc": "^3.6.3",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
@@ -49,8 +50,10 @@
     "debug": "^4.1.1",
     "hexo": "^4.2.0",
     "is-git-repository": "^1.1.1",
+    "jest": "^26.0.1",
     "koa-router": "^8.0.8",
     "koa2-validation": "^1.1.0",
+    "majestic": "^1.7.0",
     "simple-git": "^1.132.0",
     "yamljs": "^0.3.0"
   }
