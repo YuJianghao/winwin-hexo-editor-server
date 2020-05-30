@@ -68,6 +68,10 @@ hexoeditorserver(app, {
 
 This project is on early devleopmemt stage, **API may changes everyday you wake up 😜!** I will do my best to keep it working at anytime. If not, please send an issue [here](https://github.com/YuJianghao/winwin-hexo-editor-server/issues).
 
+### v0.2.0
+
+Posts from `get /posts` will not have `_content` and `raw` property in future version
+
 ## Contribute
 
 All kinds of PR are welcomed, including crazy change!
@@ -83,6 +87,15 @@ I learnt a lot about hexo usage from them!
 [Qusar Login Form Card Component](https://gist.github.com/justinatack/39ec7f37064b2e9fa61fbd450cba3826) by [justinatack](https://gist.github.com/justinatack/)
 
 ## Release Note
+
+### v0.2.0
+
+- Add search
+- Posst fro`m get /pos`ts will not have `_content` and `raw` property in future version
+
+### v0.1.9
+
+- fix git add bug caused by git 2.0
 
 ### v0.1.8
 
