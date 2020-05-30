@@ -70,7 +70,7 @@ This project is on early devleopmemt stage, **API may changes everyday you wake 
 
 ### v0.2.0
 
-Posts from `get /posts` will not have `_content` and `raw` property in future version
+Posts from `get /posts` will not have `_content` and `raw` property in future version, use `post.brief` instead.
 
 ## Contribute
 
@@ -91,7 +91,8 @@ I learnt a lot about hexo usage from them!
 ### v0.2.0
 
 - Add search
-- Posst fro`m get /pos`ts will not have `_content` and `raw` property in future version
+- Posst fro`m get /pos`ts will not have `_content` and `raw` property in future version, use `post.brief` instead.
+- add `post.brief` for post info
 
 ### v0.1.9
 
