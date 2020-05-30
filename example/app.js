@@ -2,6 +2,7 @@ const Koa = require('koa')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
+const logger = require('koa-logger')
 const cors = require('koa2-cors')
 const hexoeditorserver = require('../index')
 const app = new Koa()
@@ -17,9 +18,10 @@ app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
+app.use(logger())
 
 // mount hexo-editor-server to koa app
-hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */, hexoRoot: 'your/blog/path' })
+hexoeditorserver(app, { base: '/hexo' /* auth: */ /* some authentication middleware */, hexoRoot: './example/blog' })
 
 const http = require('http')
 const server = http.createServer(app.callback())

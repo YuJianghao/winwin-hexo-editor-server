@@ -4,6 +4,7 @@
   "description": "A koa2 middleware provides hexo eidting API.",
   "main": "index.js",
   "scripts": {
+    "dev": "export DEBUG='hexo*' && npx nodemon ./example/app.js",
     "test": "npx jest",
     "test:watch": "npx jest --watchAll",
     "test:ui": "npx majestic",
@@ -55,6 +56,8 @@
     "koa2-validation": "^1.1.0",
     "majestic": "^1.7.0",
     "simple-git": "^1.132.0",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "koa-logger": "^3.2.1",
+    "nodemon": "^2.0.4"
   }
 }

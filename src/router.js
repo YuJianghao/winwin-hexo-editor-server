@@ -72,4 +72,8 @@ module.exports = router => {
   router.post('/clean',
     controller.clean
   )
+
+  router.get('/search',
+    controller.search
+  )
 }
