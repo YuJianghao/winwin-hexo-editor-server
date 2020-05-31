@@ -208,7 +208,7 @@ exports.clean = async function (ctx, next) {
 exports.search = async function (ctx, next) {
   const size = parseInt(ctx.query.size)
   let data
-  if (size instanceof Number) {
+  if (!isNaN(size)) {
     data = await search.search(ctx.query.q, size)
   } else {
     data = await search.search(ctx.query.q)
@@ -216,7 +216,7 @@ exports.search = async function (ctx, next) {
   ctx.body = {
     success: true,
     data: {
-      result: data,
+      ...data,
       q: ctx.query.q
     }
   }
