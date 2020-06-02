@@ -44,10 +44,12 @@ class Search {
    */
   _getBrief (str, idx, queryLength, size) {
     const start = idx - size > 0 ? idx - size : 0
+    const startIdx = idx - size > 0 ? size : idx
     const result = str.slice(start, start + queryLength + 2 * size)
     return {
       idx,
-      str: result
+      str: result,
+      start: startIdx
     }
   }
 
