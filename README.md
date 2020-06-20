@@ -88,6 +88,10 @@ I learnt a lot about hexo usage from them!
 
 ## Release Note
 
+## v0.2.4
+
+- bugfix
+
 ### v0.2.3
 
 Inside `listPosts`
