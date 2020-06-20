@@ -133,9 +133,7 @@ class Hexo {
       fs.unlinkSync(src.full_source)
       if (!post.published)post.layout = 'draft'
       // 创建新文件
-      delete post._id
-      delete post.raw
-      delete post.published
+      post.freeze()
       file = await this.hexo.post.create(post)
       pathes.push(file.path)
     }))
@@ -234,7 +232,10 @@ class Hexo {
    */
   async _get (_id) {
     const query = this.hexo.locals.get('posts').findOne({ _id })
-    if (!query) debug('not found', _id)
+    if (!query) {
+      debug('not found', _id)
+      this._throwPostNotFound()
+    }
     return query
   }
 
@@ -330,6 +331,7 @@ class Hexo {
    * 更新一篇文章
    * @param {Object} options - 更新参数
    * @param {String} options._id - 文章id
+   * @param {Array} options._whe_delete - 需要删除的键的数组
    * @returns {Post} - 更新过的文章
    * @public
    */
