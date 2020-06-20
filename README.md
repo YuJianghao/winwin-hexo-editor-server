@@ -88,6 +88,13 @@ I learnt a lot about hexo usage from them!
 
 ## Release Note
 
+### v0.2.3
+
+Inside `listPosts`
+- delete `post._contnet`
+- delete `post.raw`
+- add `post._whe_brief`
+
 ### v0.2.0
 
 - Add search
