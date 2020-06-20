@@ -95,7 +95,7 @@ class Search {
     }
     debug('search request:', '`' + q + '`', 'with size', size)
     const query = q.toLowerCase()
-    const posts = await this.hexo.listPosts()
+    const posts = await this.hexo.listPostsRaw()
     return {
       result: posts.map(post => this._searchPost(post, query, size)).reduce((a, b) => a.concat(b)),
       size

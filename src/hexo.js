@@ -257,6 +257,19 @@ class Hexo {
       })
   }
 
+  async listPostsRaw () {
+    this._checkReady()
+    debug('list posts', this.hexo.locals.get('posts').toArray().length)
+    await this.hexo.load()
+    return this.hexo.locals.get('posts')
+      .map(doc => new Post(doc)).map(post => {
+        return {
+          _id: post._id,
+          raw: post.raw
+        }
+      })
+  }
+
   /**
    * 获取标签列表
    * @returns {Object[]} - 标签对象列表
